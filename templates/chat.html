@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Chatbot</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        .chat-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="bg-green-50">
+
+    <!-- Chatbot Container -->
+    <div class="container mx-auto p-4">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold mb-4 text-green-700">Plant Chatbot</h2>
+            <div class="chat-container border border-green-200 rounded-lg p-4 mb-4">
+                <div id="chat" class="space-y-2"></div>
+            </div>
+            <div class="flex">
+                <input type="text" id="userInput" class="border border-green-300 rounded-l-lg px-4 py-2 flex-grow" placeholder="Type your message...">
+                <button id="sendBtn" class="bg-green-600 text-white rounded-r-lg px-4 py-2 hover:bg-green-700 transition-colors">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Array to store chat messages
+        const chatMessages = [];
+
+        document.getElementById('sendBtn').addEventListener('click', async () => {
+            const userInput = document.getElementById('userInput');
+            const userMessage = userInput.value.trim();
+
+            if (userMessage) {
+                // Add user message to chat
+                addMessage('You', userMessage);
+                userInput.value = '';
+
+                // Call the Gemini API and get the response
+                const response = await getChatbotResponse(userMessage);
+                addMessage('Bot', response);
+            }
+        });
+
+        // Function to add messages to chat
+        function addMessage(sender, message) {
+            chatMessages.push({ sender, message });
+            const chat = document.getElementById('chat');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'p-2 rounded-lg';
+            messageDiv.classList.add(sender === 'You' ? 'bg-green-100 text-green-800' : 'bg-green-200 text-green-800');
+            messageDiv.innerText = `${sender}: ${message}`;
+            chat.appendChild(messageDiv);
+            chat.scrollTop = chat.scrollHeight;  // Scroll to the bottom
+        }
+
+        // Function to get response from the Gemini API
+        async function getChatbotResponse(userMessage) {
+            try {
+                const response = await fetch('/api/chat', {  // Flask endpoint
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: userMessage }),
+                });
+                const data = await response.json();
+                return data.reply; // Assuming your API returns { reply: "..." }
+            } catch (error) {
+                console.error('Error:', error);
+                return "Sorry, I'm having trouble talking to the server.";
+            }
+        }
+    </script>
+</body>
+</html>

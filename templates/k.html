@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Scroll Animation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .scroll-animation {
+            animation: scroll 50s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center h-screen">
+
+<div class="w-full overflow-hidden relative">
+    <div class="flex scroll-animation">
+        <img src="trained_plant_disease_model.keras.svg" alt="CNN Architecture" class="h-max w-auto">
+        <img src="trained_plant_disease_model.keras.svg" alt="CNN Architecture" class="h-max w-auto"> <!-- Duplicate for looping -->
+    </div>
+</div>
+
+</body>
+</html>
