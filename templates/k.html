@@ -6,6 +6,9 @@
     <title>Infinite Scroll Animation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        #ph{
+            height: 20vh;
+        }
         @keyframes scroll {
             0% {
                 transform: translateX(0);
@@ -24,8 +27,9 @@
 
 <div class="w-full overflow-hidden relative">
     <div class="flex scroll-animation">
-        <img src="trained_plant_disease_model.keras.svg" alt="CNN Architecture" class="h-max w-auto">
-        <img src="trained_plant_disease_model.keras.svg" alt="CNN Architecture" class="h-max w-auto"> <!-- Duplicate for looping -->
+        <img src="trained_plant_disease_model.keras.svg" id="ph" alt="CNN Architecture">
+
+         <!-- Duplicate for looping -->
     </div>
 </div>
 
